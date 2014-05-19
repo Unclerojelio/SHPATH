@@ -51,6 +51,8 @@ class City
 		inline void setVisited(bool v) { visited = v; }
 		inline void setCost(int n) {cost = n; }
 		void addNeighbor(int n, int cost);
+		void showNeighbors();
+		void showCity();
 		void visitNeighbor(int n, int cost);
 		int findCheapestNeighbor();
 };
@@ -75,6 +77,32 @@ City::~City()
 
 void City::addNeighbor(int n, int cost)
 {
+	pair<int,int> neighbor(n, cost);
+	neighbors.push_back(neighbor);
+}
+
+void City::showNeighbors()
+{
+	for(int i = 0; i < neighbors.size(); i++)
+	{
+		cout << "Neighbor: " << neighbors[i].first << " Cost: " << neighbors[i].second;
+		cout << endl;
+	}
+}
+
+void City::showCity()
+{
+	cout << "Name :" << name << endl;
+	if(visited)
+		cout << "Visited";
+	else cout << "Not Visited";
+	cout << endl;
+	cout << "Cost: " << cost << endl;
+	for(int i = 0; i < neighbors.size(); i++)
+	{
+		cout << "\tNeighbor: " << neighbors[i].first << " Cost: " << neighbors[i].second;
+		cout << endl;
+	}
 }
 
 City* cities[MAX_CITIES];
@@ -96,7 +124,7 @@ int main(void)
 			string cityName;
 			int numNeighbors = 0;
 			cin >> cityName;
-			cout << "City Name: " << cityName << endl;
+			//cout << "City Name: " << cityName << endl;
 			cin >> numNeighbors;
 			City *theCity = new City(cityName);
 			cities[cityCount] = theCity;
@@ -105,7 +133,10 @@ int main(void)
 				int neighbor = 0;
 				int cost = 0;
 				cin >> neighbor >> cost;
+				theCity->addNeighbor(neighbor, cost);
 			}
+			//theCity->showNeighbors();
+			theCity->showCity();
 		}
 	}
 	int numPaths = 0;
