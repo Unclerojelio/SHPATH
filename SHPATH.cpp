@@ -143,6 +143,7 @@ int main(void)
 		}
 	}
 	int numPaths = 0;
+	int current = 0;
 	cin >> numPaths;
 	while(numPaths--)
 	{
@@ -156,14 +157,20 @@ int main(void)
 			if(startCityName == cities[i]->getName())
 			{ 
 				startCity = cities[i];
+				cities[i]->setVisited(true);
+				// Set the initial node as current.
+				current = i;
 			}
 			if(endCityName == cities[i]->getName())
 			{
 				endCity = cities[i];
 			}
+		// Assign to every node a tentative cost value: set it to zero for our
+		// initial node and to infinity for all other nodes.
+		cities[i]->setCost(INT_MAX);
 		}
 				
-		endCity->setCost(INT_MAX);
+		startCity->setCost(0);
 		
 		cout << endl;
 		cout << "Start City" << endl;
