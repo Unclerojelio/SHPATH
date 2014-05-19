@@ -41,7 +41,7 @@
 
 using namespace std;
 
-const int MAX_CITIES = 10000;
+//const int MAX_CITIES = 10000;
 
 class City
 {
@@ -61,6 +61,9 @@ class City
 		inline void setCost(int n) {cost = n; }
 		void addNeighbor(int n, int cost);
 		void showNeighbors();
+		inline int getNumberOfNeighbors() { return (int)neighbors.size(); }
+		inline int getNeighborID(int n) { return neighbors[n].first; }
+		inline int getNeighborDistance(int n) { return neighbors[n].second; } 
 		void showCity();
 		void visitNeighbor(int n, int cost);
 		int findCheapestNeighbor();
@@ -139,7 +142,7 @@ int main(void)
 				cin >> neighbor >> distance;
 				theCity->addNeighbor(neighbor, distance);
 			}
-			theCity->showCity();
+			//theCity->showCity();
 		}
 	}
 	int numPaths = 0;
@@ -157,7 +160,6 @@ int main(void)
 			if(startCityName == cities[i]->getName())
 			{ 
 				startCity = cities[i];
-				cities[i]->setVisited(true);
 				// Set the initial node as current.
 				current = i;
 			}
@@ -168,15 +170,26 @@ int main(void)
 		// Assign to every node a tentative cost value: set it to zero for our
 		// initial node and to infinity for all other nodes.
 		cities[i]->setCost(INT_MAX);
+		cities[i]->setVisited(false);
 		}
-				
-		startCity->setCost(0);
+		
+		cities[current]->setCost(0);
+		cities[current]->setVisited(true);
 		
 		cout << endl;
 		cout << "Start City" << endl;
 		startCity->showCity();
 		cout << "End City" << endl;
 		endCity->showCity();
+		
+		cout << "Number of current city neighbors: ";
+		cout << cities[current]->getNumberOfNeighbors() << endl;
+		
+		for(int i = 0; i < cities[current]->getNumberOfNeighbors(); i++)
+		{
+			cout << "Neighbor ID: " << cities[current]->getNeighborID(i) << endl;
+			cout << "Neighbor Distance: " << cities[current]->getNeighborDistance(i) << endl;
+		}
 	}
 	return 0;
 }
