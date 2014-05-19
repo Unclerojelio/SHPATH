@@ -1,3 +1,9 @@
+// Shortest path algorithm implementation for a programming challenge. 
+
+// Start Date: 18 May 2014
+// Author: Roger Banks (roger_banks@mac.com)
+
+// Challenge description:
 // You are given a list of cities. Each direct connection between two cities has its
 // transportation cost (an integer bigger than 0). The goal is to find the paths of
 // minimum cost between pairs of cities. Assume that the cost of each path (which is
@@ -16,10 +22,12 @@
 // r [the number of paths to find <= 100]
 // NAME1 NAME2 [NAME1 - source, NAME2 - destination]
 // [empty line separating the tests]
+
 // Output
 // 
 // cost [the minimum transportation cost from city NAME1 to city NAME2 (one per line)]
 
+// Challenge website:
 // http://www.spoj.com/problems/SHPATH/
 
 // Implementation:
@@ -29,6 +37,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <climits>
 
 using namespace std;
 
@@ -83,9 +92,9 @@ void City::addNeighbor(int n, int cost)
 
 void City::showNeighbors()
 {
-	for(int i = 0; i < neighbors.size(); i++)
+	for(int i = 0; i < (int)neighbors.size(); i++)
 	{
-		cout << "Neighbor: " << neighbors[i].first << " Cost: " << neighbors[i].second;
+		cout << "Neighbor: " << neighbors[i].first << " Distance: " << neighbors[i].second;
 		cout << endl;
 	}
 }
@@ -98,41 +107,37 @@ void City::showCity()
 	else cout << "Not Visited";
 	cout << endl;
 	cout << "Cost: " << cost << endl;
-	for(int i = 0; i < neighbors.size(); i++)
-	{
-		cout << "\tNeighbor: " << neighbors[i].first << " Cost: " << neighbors[i].second;
-		cout << endl;
-	}
+	this->showNeighbors();
 }
 
-City* cities[MAX_CITIES];
+// Container of all the unvisited cities.
+vector<City*> cities;
 
 int main(void)
 {
 	int numTests = 0;
+	int numCities = 0;
 	cin >> numTests;
-	cout << "Number of Tests: " << numTests << endl;
+	//cout << "Number of Tests: " << numTests << endl;
 	while(numTests--)
 	{
-		int numCities = 0;
+		numCities = 0;
 		cin >> numCities;
-		cout << "Number of Cities: " << numCities << endl;
-		int cityCount = 0;
+		//cout << "Number of Cities: " << numCities << endl;
 		while(numCities--)
 		{
-			cityCount++;
 			string cityName;
 			int numNeighbors = 0;
 			cin >> cityName;
 			cin >> numNeighbors;
 			City *theCity = new City(cityName);
-			cities[cityCount] = theCity;
+			cities.push_back(theCity);
 			while(numNeighbors--)
 			{
 				int neighbor = 0;
-				int cost = 0;
-				cin >> neighbor >> cost;
-				theCity->addNeighbor(neighbor, cost);
+				int distance = 0;
+				cin >> neighbor >> distance;
+				theCity->addNeighbor(neighbor, distance);
 			}
 			theCity->showCity();
 		}
@@ -141,9 +146,30 @@ int main(void)
 	cin >> numPaths;
 	while(numPaths--)
 	{
-		string startCity;
-		string endCity;
-		cin >> startCity >> endCity;
+		string startCityName;
+		string endCityName;
+		City* startCity;
+		City* endCity;
+		cin >> startCityName >> endCityName;
+		for(int i = 0; i < (int)cities.size(); i++)
+		{
+			if(startCityName == cities[i]->getName())
+			{ 
+				startCity = cities[i];
+			}
+			if(endCityName == cities[i]->getName())
+			{
+				endCity = cities[i];
+			}
+		}
+				
+		endCity->setCost(INT_MAX);
+		
+		cout << endl;
+		cout << "Start City" << endl;
+		startCity->showCity();
+		cout << "End City" << endl;
+		endCity->showCity();
 	}
 	return 0;
 }
