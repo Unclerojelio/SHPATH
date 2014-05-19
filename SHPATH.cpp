@@ -124,7 +124,6 @@ int main(void)
 			string cityName;
 			int numNeighbors = 0;
 			cin >> cityName;
-			//cout << "City Name: " << cityName << endl;
 			cin >> numNeighbors;
 			City *theCity = new City(cityName);
 			cities[cityCount] = theCity;
@@ -135,7 +134,6 @@ int main(void)
 				cin >> neighbor >> cost;
 				theCity->addNeighbor(neighbor, cost);
 			}
-			//theCity->showNeighbors();
 			theCity->showCity();
 		}
 	}
