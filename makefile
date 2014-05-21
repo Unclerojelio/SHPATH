@@ -1,16 +1,17 @@
-CC=g++
-CFLAGS=-g -Wall
+CC     = g++
+CFLAGS = -g -Wall
+EXE    = SHPATH
 
-all: SHPATH
+all: ${EXE}
 
-SHPATH: SHPATH.o
-	 ${CC} -o SHPATH SHPATH.o
+${EXE}: ${EXE}.o
+	 ${CC} -o $@ $<
 
-SHPATH.o: SHPATH.cpp
-	 ${CC} -c ${CFLAGS} SHPATH.cpp
+${EXE}.o: ${EXE}.cpp
+	 ${CC} -c ${CFLAGS} $<
 	 
-run: SHPATH
-	 ./SHPATH < SHPATH.in
+run: ${EXE}
+	 ./${EXE} < ${EXE}.in
      
 clean:
-	 rm *.o SHPATH core
+	 -rm  -f *.o ${EXE} core
